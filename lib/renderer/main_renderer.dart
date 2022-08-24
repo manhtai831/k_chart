@@ -49,6 +49,7 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
             gridColor: chartColors.gridColor) {
     mCandleWidth = this.chartStyle.candleWidth;
     mCandleLineWidth = this.chartStyle.candleLineWidth;
+
     mLineStrokeWidth = this.chartStyle.lineWidth;
     mLinePaint = Paint()
       ..isAntiAlias = true
@@ -174,7 +175,7 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
     mLineFillPath!.reset();
 
     canvas.drawPath(mLinePath!,
-        mLinePaint..strokeWidth = (mLineStrokeWidth / scaleX).clamp(0.1, 1.0));
+        mLinePaint/*..strokeWidth = (mLineStrokeWidth / scaleX).clamp(0.1, 1.0)*/);
     mLinePath!.reset();
   }
 
