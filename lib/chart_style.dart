@@ -82,6 +82,9 @@ class ChartStyle {
   //蜡烛中间线的宽度
   double candleLineWidth = 1.5;
 
+ //蜡烛中间线的宽度
+  double lineWidth = 1.0;
+
   //vol柱子宽度
   double volWidth = 8.5;
 

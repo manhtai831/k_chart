@@ -22,7 +22,7 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
   List<int> maDayList;
   final ChartStyle chartStyle;
   final ChartColors chartColors;
-  final double mLineStrokeWidth = 1.0;
+   double mLineStrokeWidth = 1.0;
   double scaleX;
   late Paint mLinePaint;
   final VerticalTextAlignment verticalTextAlignment;
@@ -49,6 +49,7 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
             gridColor: chartColors.gridColor) {
     mCandleWidth = this.chartStyle.candleWidth;
     mCandleLineWidth = this.chartStyle.candleLineWidth;
+    mLineStrokeWidth = this.chartStyle.lineWidth;
     mLinePaint = Paint()
       ..isAntiAlias = true
       ..style = PaintingStyle.stroke
