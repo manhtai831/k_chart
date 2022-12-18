@@ -58,14 +58,10 @@ class _MyHomePageState extends State<MyHomePage> {
     rootBundle.loadString('assets/depth.json').then((result) {
       final parseJson = json.decode(result);
       final tick = parseJson['tick'] as Map<String, dynamic>;
-      final List<DepthEntity> bids = (tick['bids'] as List<dynamic>)
-          .map<DepthEntity>(
-              (item) => DepthEntity(item[0] as double, item[1] as double))
-          .toList();
-      final List<DepthEntity> asks = (tick['asks'] as List<dynamic>)
-          .map<DepthEntity>(
-              (item) => DepthEntity(item[0] as double, item[1] as double))
-          .toList();
+      final List<DepthEntity> bids =
+          (tick['bids'] as List<dynamic>).map<DepthEntity>((item) => DepthEntity(item[0] as double, item[1] as double)).toList();
+      final List<DepthEntity> asks =
+          (tick['asks'] as List<dynamic>).map<DepthEntity>((item) => DepthEntity(item[0] as double, item[1] as double)).toList();
       initDepth(bids, asks);
     });
   }
@@ -121,18 +117,14 @@ class _MyHomePageState extends State<MyHomePage> {
               showNowPrice: _showNowPrice,
               //`isChinese` is Deprecated, Use `translations` instead.
               isChinese: isChinese,
+              verticalTextMapper: _mapperText,
               hideGrid: _hideGrid,
               isTapShowInfoDialog: false,
               verticalTextAlignment: _verticalTextAlignment,
               maDayList: [1, 100, 1000],
             ),
           ),
-          if (showLoading)
-            Container(
-                width: double.infinity,
-                height: 450,
-                alignment: Alignment.center,
-                child: const CircularProgressIndicator()),
+          if (showLoading) Container(width: double.infinity, height: 450, alignment: Alignment.center, child: const CircularProgressIndicator()),
         ]),
         buildButtons(),
         if (_bids != null && _asks != null)
@@ -155,25 +147,16 @@ class _MyHomePageState extends State<MyHomePage> {
         button("Line:MA", onPressed: () => _mainState = MainState.MA),
         button("Line:BOLL", onPressed: () => _mainState = MainState.BOLL),
         button("Hide Line", onPressed: () => _mainState = MainState.NONE),
-        button("Secondary Chart:MACD",
-            onPressed: () => _secondaryState = SecondaryState.MACD),
-        button("Secondary Chart:KDJ",
-            onPressed: () => _secondaryState = SecondaryState.KDJ),
-        button("Secondary Chart:RSI",
-            onPressed: () => _secondaryState = SecondaryState.RSI),
-        button("Secondary Chart:WR",
-            onPressed: () => _secondaryState = SecondaryState.WR),
-        button("Secondary Chart:CCI",
-            onPressed: () => _secondaryState = SecondaryState.CCI),
-        button("Secondary Chart:Hide",
-            onPressed: () => _secondaryState = SecondaryState.NONE),
-        button(_volHidden ? "Show Vol" : "Hide Vol",
-            onPressed: () => _volHidden = !_volHidden),
+        button("Secondary Chart:MACD", onPressed: () => _secondaryState = SecondaryState.MACD),
+        button("Secondary Chart:KDJ", onPressed: () => _secondaryState = SecondaryState.KDJ),
+        button("Secondary Chart:RSI", onPressed: () => _secondaryState = SecondaryState.RSI),
+        button("Secondary Chart:WR", onPressed: () => _secondaryState = SecondaryState.WR),
+        button("Secondary Chart:CCI", onPressed: () => _secondaryState = SecondaryState.CCI),
+        button("Secondary Chart:Hide", onPressed: () => _secondaryState = SecondaryState.NONE),
+        button(_volHidden ? "Show Vol" : "Hide Vol", onPressed: () => _volHidden = !_volHidden),
         button("Change Language", onPressed: () => isChinese = !isChinese),
-        button(_hideGrid ? "Show Grid" : "Hide Grid",
-            onPressed: () => _hideGrid = !_hideGrid),
-        button(_showNowPrice ? "Hide Now Price" : "Show Now Price",
-            onPressed: () => _showNowPrice = !_showNowPrice),
+        button(_hideGrid ? "Show Grid" : "Hide Grid", onPressed: () => _hideGrid = !_hideGrid),
+        button(_showNowPrice ? "Hide Now Price" : "Show Now Price", onPressed: () => _showNowPrice = !_showNowPrice),
         button("Customize UI", onPressed: () {
           setState(() {
             this.isChangeUI = !this.isChangeUI;
@@ -241,8 +224,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   //获取火币数据，需要翻墙
   Future<String> getChatDataFromInternet(String? period) async {
-    var url =
-        'https://api.huobi.br.com/market/history/kline?period=${period ?? '1day'}&size=300&symbol=btcusdt';
+    var url = 'https://api.huobi.br.com/market/history/kline?period=${period ?? '1day'}&size=300&symbol=btcusdt';
     late String result;
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
@@ -261,14 +243,14 @@ class _MyHomePageState extends State<MyHomePage> {
   void solveChatData(String result) {
     final Map parseJson = json.decode(result) as Map<dynamic, dynamic>;
     final list = parseJson['data'] as List<dynamic>;
-    datas = list
-        .map((item) => KLineEntity.fromJson(item as Map<String, dynamic>))
-        .toList()
-        .reversed
-        .toList()
-        .cast<KLineEntity>();
+    datas = list.map((item) => KLineEntity.fromJson(item as Map<String, dynamic>)).toList().reversed.toList().cast<KLineEntity>();
     DataUtil.calculate(datas!);
     showLoading = false;
     setState(() {});
+  }
+
+  String _mapperText(double? n) {
+    if (n == null) return '0';
+    return n.toInt().toString();
   }
 }
